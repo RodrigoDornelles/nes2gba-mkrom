@@ -1,0 +1,58 @@
+<!-- Example config file -->
+<pnes source="/home/eiz/ext/pocketnes.gba"
+      output="test.gba">
+      <!-- Initial splash screen (this is optional). -->
+      <splash source="/home/eiz/ext/hoe/PocketNES_ROM_Builder/PocketNES Splash - by Tidegear.raw"/>
+
+      <!-- Font and font palette. Offset must be a location in the PocketNES ROM,
+           get them from Hoe's offsets.ini. (Just copy pFont for font and 
+           FONTPAL for palette) (This is also optional) -->
+      <font source="/home/eiz/ext/font-cv3.gfx" offset="385"/>
+      <palette source="/home/eiz/ext/cv3pal.pal" offset="3457"/>
+      <!-- 4685 is the menu cursor location in v9. font and palette may be replaced by patch
+           elements, as well (they're actually the same thing) -->
+      <patch value=">" offset="4685"/>
+      <!-- Each 'rom' element specifies a game to be inserted. Possible attributes:
+
+           Required:
+           name   - The name of the game.
+	   source - The ROM file to insert.
+
+	   Options (these may be set to 0 or 1):
+	   nocpuhack - 'Disable CPU hack' 
+	   pal       - Enable PAL timing
+	   ppuhack   - Enable PPU Hack
+	   spmem     - 'Screen follows address' if yes, otherwise 'Screen follows sprite'
+
+	   Other attributes:
+	   spritefollow - This is a numeric value for 'sprite following'.
+       -->
+      <rom name="Final Fantasy" 
+           source="/home/eiz/emulation/nes/NES ROMs/Final Fantasy (U).nes"/>
+      <rom name="Final Fantasy III" 
+           source="/home/eiz/emulation/nes/NES ROMs/Final Fantasy 3 (J).nes"/>
+      <rom name="Moon Crystal" 
+           source="/home/eiz/emulation/nes/NES ROMs/Moon Crystal (J).nes"/>
+      <rom name="Mother"
+           source="/home/eiz/emulation/nes/NES ROMs/Mother (J).nes"/>
+      <rom name="Dragon Warrior III"
+           source="/home/eiz/emulation/nes/NES ROMs/Dragon Warrior 3 (U).nes">
+           <!-- Cheats. For a line such as:
+                $0x00029162 00=80 - King gives TONS OF GOLD!
+                In Hank's hacks DB, insert a line such as:
+                <cheat offset="0x00029162" value="0x80"/>
+                For multiple value codes, you will need to use multiple cheat elements.
+
+                You should be able to figure out the rest (XX values, && digits, etc) on your own.
+            -->
+
+           <!-- King gives massive gold -->
+           <cheat offset="0x00029162" value="0x80"/>
+           <!-- Player starts with high strength -->
+           <cheat offset="0x0001F27C" value="0xFE"/>
+      </rom>
+      <rom name="Castlevania"
+           source="/home/eiz/emulation/nes/NES ROMs/Castlevania (E).nes"
+	   spmem="1"
+	   spritefollow="501"/>
+</pnes>
