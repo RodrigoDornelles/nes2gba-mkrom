@@ -1,4 +1,4 @@
-name: Build and Upload
+name: CI
 on:
   push:
   create:
@@ -6,6 +6,7 @@ on:
 
 jobs:
   build_and_upload:
+    name: Build and Upload
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -20,16 +21,15 @@ jobs:
         run: make
 
       - name: Zip program
-        run: mkdir -p artifacts && zip -r artifacts/mkrom-dornelles${{ matrix.os }}-${{ matrix.architecture }}.zip mkrom config.xml
+        run: mkdir -p artifacts && zip -r artifacts/mkrom-dornelles-${{ matrix.os }}-${{ matrix.architecture }}.zip mkrom config.xml
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: built-artifacts
+          name: mkrom-dornelles-artifacts
           path: artifacts
           if-no-files-found: error
           retention-days: 1
-
 
       - name: Upload artifacts to github realese
         if: startsWith(github.ref, 'refs/tags')
