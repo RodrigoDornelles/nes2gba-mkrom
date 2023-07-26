@@ -6,10 +6,10 @@ LDFLAGS = -lexpat
 all: mkrom
 
 mkrom: $(OFILES)
-	gcc -o mkrom $(OFILES) $(LDFLAGS)
+	${CC} -o mkrom $(OFILES) $(LDFLAGS)
 
 static: $(OFILES)
-	gcc -o mkrom -static $(OFILES) $(LDFLAGS)
+	${CC} -o mkrom -static $(OFILES) $(LDFLAGS)
 
 clean:
 	rm -f mkrom $(OFILES)

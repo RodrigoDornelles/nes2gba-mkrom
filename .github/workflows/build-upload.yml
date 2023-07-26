@@ -1,0 +1,42 @@
+name: CI
+on:
+  push:
+  create:
+    tags:
+
+jobs:
+  build_and_upload:
+    name: Build and Upload
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        architecture: [amd64, arm64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build with Make
+        run: make
+
+      - name: Zip program
+        run: mkdir -p artifacts && zip -r artifacts/mkrom-dornelles-${{ matrix.os }}-${{ matrix.architecture }}.zip mkrom config.xml
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: mkrom-dornelles-artifacts
+          path: artifacts
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Upload artifacts to github realese
+        if: startsWith(github.ref, 'refs/tags')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "artifacts/*.zip"
+          tag_name: ${{ github.ref }}
+          title: Release ${{ github.ref }}
+          body: |
+            Release for ${{ github.ref }}
