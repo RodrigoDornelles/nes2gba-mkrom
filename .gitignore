@@ -29,6 +29,7 @@
 *.dylib
 
 # Executables
+mkrom
 *.exe
 *.out
 *.app
